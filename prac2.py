@@ -31,8 +31,8 @@ vgad(userNum)
 
 #Task2
 print("Task2")
-import vgadayka
+from vgadayka import vgaday
 
 print("Komputer znovu zagadav chislo vid 1 do 100, sprobuy vgadati")
 userNum = int(input("Vvedi zile chislo vid 1 do 100: "))
-vgadayka.vgaday(userNum)
+vgaday(userNum)
