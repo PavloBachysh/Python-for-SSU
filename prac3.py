@@ -2,8 +2,7 @@
 print("Task1")
 radok = input("Введіть будь-який рядок: ")
 print("Вивід рядка поелементно: ")
-for a in radok:
-    print(a)
+print(radok[:])
 
 #Task2
 print("Task2")
