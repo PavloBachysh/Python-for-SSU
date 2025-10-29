@@ -46,13 +46,27 @@ while (True):
             SortSlownyk(mySlownyk)
         case 3:
             try:
+                choose = 1
                 key = str(input("Введіть імя: "))
                 val = int(input("Введіть к-сть придбаних жетонів : "))
             except ValueError:
                 print("Некоректний формат")
             if key in mySlownyk:
-                print("Таке імя вже є в словнику, тому значення буде замінено")
-            DodatiElement(key, val, mySlownyk)
+                print("Таке імя вже є в словнику")
+                print(
+                    "1 - Змінити значення",
+                    "\n2 - Проігнорувати"
+                )
+                while(True):
+                    try:
+                        choose = int(input("Введіть номер дії : "))
+                        break
+                    except:
+                        print("Некоректний формат")
+                        continue
+            if (choose == 1):
+                DodatiElement(key, val, mySlownyk)
+            
         case 4:
             toDel = str(input("Введіть імя для видалення з словнику: "))
             if toDel not in mySlownyk:
@@ -79,16 +93,30 @@ except ValueError:
 
 teams[myTeamName] = myTeamScore
 
-sorted_teams = dict(sorted(teams.items(), key=lambda x: x[1], reverse=True ))
-print("Список команд з вашою командою")
-print (sorted_teams)
+def Sort(teams):
+    sorted_teams = dict(sorted(teams.items(), key=lambda x: x[1], reverse=True ))
+    print("Список команд з вашою командою")
+    print (sorted_teams)
+    return sorted_teams
 
-scores = list(sorted_teams.values())
-place = scores.index(myTeamScore) + 1
-print(f"Ваша команда займає {place} місце!")
+sorted_teams = Sort(teams)
 
-worse_teams = [key for key, value in teams.items() if value < myTeamScore]
-print("Команди, гірші за вашу: ")
-print(worse_teams)
+def FindPlace(sorted_teams):
+    scores = list(sorted_teams.values())
+    place = scores.index(myTeamScore) + 1
+    print(f"Ваша команда займає {place} місце!")
+    return place
+
+place = FindPlace(sorted_teams)
+
+def FindWorse(teams):
+    worse_teams = [key for key, value in teams.items() if value < myTeamScore]
+    print("Команди, гірші за вашу: ")
+    print(worse_teams)
+    return worse_teams
+
+worse_teams = FindWorse(teams)
+
+
 
 
