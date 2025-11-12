@@ -1,7 +1,6 @@
 import csv
 import os
 
-
 #Task 1
 print(
     "====================",
@@ -22,12 +21,12 @@ try:
         print(r)
     csvFile.close()
 except:
-    print("Не вдалося відкрити файл")
+    print(f"Не вдалося відкрити файл {fileName}, можливо його не існує")
 
 try:
     csvFile = open(MakePath(fileName), 'r')
 except:
-    print("Не вдалося відкрити файл")
+    print(f"Не вдалося відкрити файл {fileName}, можливо його не існує")
 reader = csv.DictReader(csvFile, delimiter = ',')
 country = str(input("Введіть країну яку хочете знайти: "))
 isFounded = False
@@ -36,10 +35,12 @@ for r in reader:
         isFounded = True
         answer = r
         print(f"{answer['Country Name']} had {answer['Series Name']} = {answer['2019 [YR2019]']} in 2019 year")
-        with open(MakePath('Resault.csv'), 'w') as res:
-            writer = csv.writer(res, dialect = 'excel')
-            writer.writerows(answer.items())
-            res.close()
+        try:
+            with open(MakePath('Resault.csv'), 'w') as res:
+                writer = csv.writer(res, dialect = 'excel')
+                writer.writerows(answer.items())
+        except:
+            print(f"Не вдалося записати")
 if (isFounded == False):
     print("Такої країни немає в списку")
 csvFile.close()
@@ -57,32 +58,54 @@ def MakePath(nameOfFile):
 
 #Функціх
 def OutputJSON(json_file_name):
-    with open(MakePath(json_file_name), 'r') as json_file:
-        data = json.load(json_file)
+    try:
+        with open(MakePath(json_file_name), 'r') as json_file:
+            data = json.load(json_file)
+    except:
+        print(f"Не вдалося відкрити файл {json_file_name}, можливо його не існує")
+        exit()
     print("Вивід файлу: ")
     print(data)
 
 def AddToJSON(json_file_name, key, value):
-    with open(MakePath(json_file_name), 'r') as json_file:
-        data = json.load(json_file)
+    try:
+        with open(MakePath(json_file_name), 'r') as json_file:
+            data = json.load(json_file)
+    except:
+        print(f"Не вдалося відкрити файл {json_file_name}, можливо його не існує")
+        exit()
     data[key] = value
-    with open(MakePath(json_file_name), 'w') as json_file:
-        json.dump(data, json_file, indent = 2)
+    try:
+        with open(MakePath(json_file_name), 'w') as json_file:
+            json.dump(data, json_file, indent = 2)
+    except:
+        print("Не вдалося записати")
 
 def DeleteFromJSON(json_file_name, key):
-    with open(MakePath(json_file_name), 'r') as json_file:
-        data = json.load(json_file)
+    try:
+        with open(MakePath(json_file_name), 'r') as json_file:
+            data = json.load(json_file)
+    except:
+        print(f"Не вдалося відкрити файл {json_file_name}, можливо його не існує")
+        exit()
     if (data[key] != None):
         print(f"За ключем {key} видалено {data[key]}")
         del data[key]
-        with open(MakePath(json_file_name), 'w') as json_file:
-            json.dump(data, json_file, indent = 2)
+        try:
+            with open(MakePath(json_file_name), 'w') as json_file:
+                json.dump(data, json_file, indent = 2)
+        except:
+            print("Не вдалося записати")
     else:
         print(f"Ключа {key} не існує в цьому файлі")
 
 def FindDataFromJSON(json_file_name, key):
-    with open(MakePath(json_file_name), 'r') as json_file:
-        data = json.load(json_file)
+    try:
+        with open(MakePath(json_file_name), 'r') as json_file:
+            data = json.load(json_file)
+    except:
+        print(f"Не вдалося відкрити файл {json_file_name}, можливо його не існує")
+        exit()
     print(f"Знайдена інформація за ключем {key} = {data[key]}")
 
 #Загальні завдання
@@ -96,8 +119,11 @@ data = {
     "Name": "Pasha",
     "Age": 18
 }
-with open(MakePath(jsonFileName), 'w') as jsonFile:
-    json.dump(data, jsonFile, indent=2)
+try:
+    with open(MakePath(jsonFileName), 'w') as jsonFile:
+        json.dump(data, jsonFile, indent=2)
+except:
+    print("Не вдалося записати")
 
 OutputJSON(jsonFileName)
 AddToJSON(jsonFileName, 'Phone Number', '+380 93 829 22 29')
@@ -149,7 +175,10 @@ def FindWorse(teams):
 
 worse_teams = FindWorse(teams)
 
-with open(MakePath('my_json_file.json'), 'w') as myJSON:
-    json.dump(teams, myJSON, indent = 2)
+try:
+    with open(MakePath('my_json_file.json'), 'w') as myJSON:
+        json.dump(teams, myJSON, indent = 2)
+except:
+    print("Не вдалося записати")
 
 print("Done")
