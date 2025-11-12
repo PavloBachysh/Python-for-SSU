@@ -33,20 +33,23 @@ def ToFloat(a):
         return float(a)
     except:
         return 0
-
-with open(MakePath(data_file), 'r') as dataFile:
-    reader = csv.DictReader(dataFile, delimiter=',')
-    values = []
-    for item in reader:
-        if (item['Country Name'] == ''):
-            del item
-        else:
-            keys = list(item.keys())[4:-1]
-            keys = [key[:4] for key in keys]
-            value = list(item.values())[4:-1]
-            value = [ToFloat(val) for val in value]
-            values.append(value)
-            print(item)
+try:
+    with open(MakePath(data_file), 'r') as dataFile:
+        reader = csv.DictReader(dataFile, delimiter=',')
+        values = []
+        for item in reader:
+            if (item['Country Name'] == ''):
+                del item
+            else:
+                keys = list(item.keys())[4:-1]
+                keys = [key[:4] for key in keys]
+                value = list(item.values())[4:-1]
+                value = [ToFloat(val) for val in value]
+                values.append(value)
+                print(item)
+except:
+    print(f"Не вдалося відкрити файл {data_file}, можливо його не існує")
+    exit()
 
 
 plt.plot(keys, values[0], color = 'red', label = "Ukraine")
